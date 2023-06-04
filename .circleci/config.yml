@@ -1,26 +1,42 @@
 # Hi, I am going to create config file for email notification
 version: 2.1
+
 jobs:
   send_email_notification:
     docker:
       - image: circleci/python:3.7
+
     steps:
       - run:
           name: Send email notification
           command: |
-            curl -X POST \
-              -H "Content-Type: application/json" \
-              -H "Circle-Token: b681674a8e9ab815cd3fd25aa154c3b8dbe0adde" \
-              -d '{
-                "to": "altamashfaridi2023@gmail.com",
+            curl --request POST \
+              --url https://api.sendgrid.com/v3/mail/send \
+              --header "Authorization: Bearer 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" \
+              --header 'Content-Type: application/json' \
+              --data '{
+                "personalizations": [
+                  {
+                    "to": [
+                      {
+                        "email": "ahtesham.ahmad2018@gmail.com"
+                      }
+                    ]
+                  }
+                ],
+                "from": {
+                  "email": "altamashfaridi2023@gmail.com"
+                },
                 "subject": "Custom email notification",
-                "body": "This is a custom email notification message."
-              }' \
-              https://circleci.com/api/v2/notify/email
-
+                "content": [
+                  {
+                    "type": "text/plain",
+                    "value": "This is a custom email notification message."
+                  }
+                ]
+              }'
 workflows:
   version: 2
   build-and-notify:
     jobs:
       - send_email_notification
-
