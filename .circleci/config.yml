@@ -1,7 +1,4 @@
 # Hi, I am going to create config file for email notification
-
-version: 2.1
-
 jobs:
   send_email_notification:
     docker:
