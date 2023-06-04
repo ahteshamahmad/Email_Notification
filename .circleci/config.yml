@@ -4,7 +4,6 @@ jobs:
   send_email_notification:
     docker:
       - image: circleci/python:3.7
-
     steps:
       - run:
           name: Send email notification
@@ -18,4 +17,10 @@ jobs:
                 "body": "This is a custom email notification message."
               }' \
               https://circleci.com/api/v2/notify/email
+
+workflows:
+  version: 2
+  build-and-notify:
+    jobs:
+      - send_email_notification
 
